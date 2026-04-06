@@ -354,6 +354,8 @@ ensemble_preds[ensemble_preds < 0.1] = 0
 | v3 | **LightGBM (ffill)** | **0.3750** | **1.90248** | **ffill修复 → 大幅改善** |
 | v4 | LGB+XGB+CB Ensemble | 待定 | — | Round 2 集成 |
 
+**当前最佳**: LB = 1.90248 (LightGBM ffill), TOP 排名约 0.33
+
 ## 技术栈
 
 - **语言**: Python 3.x
