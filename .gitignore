@@ -2,6 +2,7 @@ data/raw/
 data/processed/
 outputs/models/
 outputs/figures/
+outputs/submissions/
 __pycache__/
 *.pyc
 .ipynb_checkpoints/
@@ -9,3 +10,5 @@ __pycache__/
 *.pkl
 *.joblib
 .env
+catboost_info/
+docs/superpowers/
