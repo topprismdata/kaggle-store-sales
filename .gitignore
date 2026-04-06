@@ -1,0 +1,11 @@
+data/raw/
+data/processed/
+outputs/models/
+outputs/figures/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.DS_Store
+*.pkl
+*.joblib
+.env
