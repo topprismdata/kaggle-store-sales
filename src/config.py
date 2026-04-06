@@ -55,6 +55,38 @@ class ModelConfig:
     early_stopping_rounds: int = 100
 
 @dataclass
+class XGBoostConfig:
+    """XGBoost超参数"""
+    objective: str = "reg:squarederror"
+    eval_metric: str = "rmse"
+    n_estimators: int = 3000
+    learning_rate: float = 0.005
+    max_depth: int = 6
+    min_child_weight: int = 50
+    subsample: float = 0.8
+    colsample_bytree: float = 0.8
+    reg_alpha: float = 0.5
+    reg_lambda: float = 1.0
+    random_state: int = 42
+    early_stopping_rounds: int = 100
+    tree_method: str = "hist"
+
+@dataclass
+class CatBoostConfig:
+    """CatBoost超参数"""
+    loss_function: str = "RMSE"
+    iterations: int = 3000
+    learning_rate: float = 0.005
+    depth: int = 8
+    l2_leaf_reg: float = 0.1
+    random_seed: int = 42
+    early_stopping_rounds: int = 100
+    bootstrap_type: str = "Bernoulli"
+    subsample: float = 0.8
+    colsample_bylevel: float = 0.8
+    verbose: int = 500
+
+@dataclass
 class CVConfig:
     """交叉验证配置"""
     n_folds: int = 5
