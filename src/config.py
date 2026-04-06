@@ -25,9 +25,10 @@ N_FAMILIES = 33
 @dataclass
 class FeatureConfig:
     """特征工程配置"""
+    # 可配置参数
     lag_days: List[int] = field(default_factory=lambda: [1, 7, 14, 28, 365])
     rolling_windows: List[int] = field(default_factory=lambda: [7, 14, 28, 60])
-    rolling_stats: List[str] = field(default_factory=lambda: ["mean", "std", "min", "max"])
+    rolling_stats: List[str] = field(default_factory=lambda: ["mean", "std"])
     ewm_spans: List[int] = field(default_factory=lambda: [7, 14, 28])
     use_oil: bool = True
     use_holidays: bool = True
