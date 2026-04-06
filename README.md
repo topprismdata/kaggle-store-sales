@@ -349,8 +349,10 @@ ensemble_preds[ensemble_preds < 0.1] = 0
 
 | 版本 | 模型 | CV RMSLE | 公开榜 (Public LB) | 说明 |
 |------|------|---------|-------------------|------|
-| v1 | LightGBM | 0.3751 | — | Round 1 Baseline |
-| v2 | LGB+XGB+CB Ensemble | 待定 | — | Round 2 集成 |
+| v1 | LightGBM (NaN) | 0.3751 | 2.67192 | Round 1 Baseline — test lag特征NaN级联 |
+| v2 | LightGBM (sales=0) | 0.3750 | 2.83107 | sales填0，lag_1全为0 → 更差 |
+| v3 | **LightGBM (ffill)** | **0.3750** | **1.90248** | **ffill修复 → 大幅改善** |
+| v4 | LGB+XGB+CB Ensemble | 待定 | — | Round 2 集成 |
 
 ## 技术栈
 
