@@ -17,9 +17,15 @@ def build_features(
     train: pd.DataFrame,
     test: pd.DataFrame,
     cfg: FeatureConfig = None,
+    test_sales: pd.Series = None,
 ) -> tuple:
     """构建完整的特征矩阵。
     返回: (train_featured, test_featured, feature_columns)
+
+    test_sales: Optional. If provided, used as test sales values instead of ffill.
+                Should be a Series aligned with test rows (e.g., TE estimates).
+                Enables TE-fill strategy: lag features vary by day_of_week instead
+                of being constant (ffill).
     """
     if cfg is None:
         cfg = FeatureConfig()
@@ -32,14 +38,17 @@ def build_features(
     # 原因: sales=NaN → lag/rolling/ewm在test上大面积NaN → LB=2.67
     #       sales=0   → lag_1全为0 → 预测偏差 → LB=2.83
     # 解决: concat后按(store,family)分组做ffill → train末尾sales传播到test → LB改善
+    # v4 (TE-fill): 用TE期望值填充test sales → lag特征按day_of_week变化而非恒定
     train["is_train"] = True
     test["is_train"] = False
-    test["sales"] = np.nan
+    if test_sales is not None:
+        test["sales"] = test_sales.values
+    else:
+        test["sales"] = np.nan
     df = pd.concat([train, test], ignore_index=True)
     df = df.sort_values(["store_nbr", "family", "date"]).reset_index(drop=True)
 
-    # 核心修复: 前向填充test的sales值
-    # 对每个(store_nbr, family)分组，将train末尾的sales值向前传播到test的所有天
+    # 前向填充: 对于ffill模式填完所有NaN; 对于TE-fill模式只填补可能的剩余NaN
     df["sales"] = df.groupby(["store_nbr", "family"])["sales"].ffill()
 
     # Step 1: 时间特征

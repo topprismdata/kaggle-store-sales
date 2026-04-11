@@ -23,7 +23,7 @@ def add_external_features(df: pd.DataFrame) -> pd.DataFrame:
         df["transactions_lag_1"] = group["transactions"].shift(1)
         df["transactions_lag_7"] = group["transactions"].shift(7)
         df["transactions_roll_mean_7"] = (
-            group["transactions"].shift(1).rolling(7, min_periods=1).mean().values
+            group["transactions"].shift(1).rolling(7, min_periods=1).mean()
         )
 
     # === Store-Family 统计特征 ===
