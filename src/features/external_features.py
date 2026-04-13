@@ -9,13 +9,23 @@ def add_external_features(df: pd.DataFrame) -> pd.DataFrame:
     df = df.sort_values(["store_nbr", "family", "date"])
 
     # === 油价特征 ===
+    # Fix: compute oil rolling/pct_change/diff on unique dates first to avoid
+    # cross store-family contamination, then merge back.
     if "dcoilwtico" in df.columns:
-        df["oil_roll_mean_7"] = df["dcoilwtico"].rolling(7, min_periods=1).mean()
-        df["oil_roll_mean_14"] = df["dcoilwtico"].rolling(14, min_periods=1).mean()
-        df["oil_roll_mean_28"] = df["dcoilwtico"].rolling(28, min_periods=1).mean()
-        df["oil_pct_change_7"] = df["dcoilwtico"].pct_change(7)
-        df["oil_pct_change_28"] = df["dcoilwtico"].pct_change(28)
-        df["oil_diff_7"] = df["dcoilwtico"].diff(7)
+        oil_by_date = df[["date", "dcoilwtico"]].drop_duplicates("date").sort_values("date")
+        oil_by_date = oil_by_date.set_index("date")
+        oil_by_date["oil_roll_mean_7"] = oil_by_date["dcoilwtico"].rolling(7, min_periods=1).mean()
+        oil_by_date["oil_roll_mean_14"] = oil_by_date["dcoilwtico"].rolling(14, min_periods=1).mean()
+        oil_by_date["oil_roll_mean_28"] = oil_by_date["dcoilwtico"].rolling(28, min_periods=1).mean()
+        oil_by_date["oil_pct_change_7"] = oil_by_date["dcoilwtico"].pct_change(7)
+        oil_by_date["oil_pct_change_28"] = oil_by_date["dcoilwtico"].pct_change(28)
+        oil_by_date["oil_diff_7"] = oil_by_date["dcoilwtico"].diff(7)
+        oil_features = oil_by_date[["oil_roll_mean_7", "oil_roll_mean_14", "oil_roll_mean_28",
+                                     "oil_pct_change_7", "oil_pct_change_28", "oil_diff_7"]].reset_index()
+        df = df.drop(columns=["oil_roll_mean_7", "oil_roll_mean_14", "oil_roll_mean_28",
+                               "oil_pct_change_7", "oil_pct_change_28", "oil_diff_7"],
+                      errors="ignore")
+        df = df.merge(oil_features, on="date", how="left")
 
     # === 交易量特征 ===
     if "transactions" in df.columns:
