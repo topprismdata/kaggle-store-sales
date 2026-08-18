@@ -1,0 +1,36 @@
+topprism:
+  purpose: learning_project
+  capability: time_series_ml
+  maturity: learning
+  evidence:
+    type: kaggle_benchmark
+    scope: >-
+      Store Sales Time Series Forecasting (54 stores x 33 product
+      families x 16-day forecast horizon, RMSLE metric). Best
+      reproducible result: LightGBM baseline with ffill fix, public
+      LB ~ 1.90248 (per docs/competition-log.md v3).
+  parent:
+    - cultivating_ml_agent
+  product_relationship: "This is not a customer product."
+
+business_question:
+  en: >-
+    What reusable ML knowledge can a Cultivating ML Agent crystallize
+    from a longitudinal time-series competition project, including
+    its failures and CV/LB gap stories?
+  zh: >-
+    Cultivating ML Agent 在一个长期时序竞赛项目中，能把哪些可复用的
+    ML 知识（包括失败与 CV/LB gap 故事）结晶下来？
+
+platform:
+  system: native_ai
+  layer: agent_capability
+  solution: kaggle_learning_project
+
+website:
+  product_path: /learning-projects/store-sales
+  evidence_path: /evidence/kaggle-store-sales
+
+repository:
+  owner: topprismdata
+  public: true
