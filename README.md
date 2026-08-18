@@ -51,45 +51,46 @@ Examples already visible in the project:
 
 ------------------------------------------------------------------------
 
-## Preserve failure history
+## Preserved failure history
 
-Do not rewrite the project as if the first approach was correct.
+The project records a large CV vs public-LB mismatch and the iterative
+fixes that followed. That history is preserved verbatim in
+[`docs/competition-log.md`](docs/competition-log.md) because Native AI
+needs to learn from failure, not only from final scores.
 
-The repository records large CV ↔ public-LB mismatch and iterative
-fixes. That history is valuable because Native AI needs to learn from
-failure, not only final scores.
-
-Recommended section:
-
-### What the agent learned later
-
-For every major mistake:
+The reusable pattern in this project is:
 
 ``` text
-Observation
-→ root cause
-→ corrected method
-→ reusable skill / principle
-→ later project where it was reused
+Project
+-> failure
+-> root cause
+-> corrected method
+-> reusable skill / principle
+-> later reuse
 ```
+
+The v1 -> v3 (LightGBM ffill fix) and v3 -> v4 (Round 2 multi-model
+ensemble) jumps in this project both follow this pattern.
 
 ------------------------------------------------------------------------
 
 ## Evidence
 
-Keep competition scores, but classify them as **learning evidence**, not
-product evidence.
+Competition scores are classified as **learning evidence**, not as
+product evidence. Long feature-by-feature tutorials and code-debug
+narratives live in [`docs/competition-log.md`](docs/competition-log.md)
+and are not duplicated in the README.
 
-Move long feature-by-feature tutorials and code-debug narratives into
-`docs/`.
+This README records:
 
-README should contain:
-
--   task;
--   best reproducible result;
--   most important failures;
--   skills crystallized;
--   relationship to `cultivating-ml-agent`.
+-   task: forecast 16 days of sales for 54 stores x 33 product families;
+-   best reproducible result: LightGBM with ffill fix (public LB
+    ~1.90248 per the preserved log);
+-   most important failures: v1 -> v2 NaN-vs-zero lag-fill regression;
+-   skills crystallized: time-series walk-forward validation,
+    feature-leakage detection, AutoML-first tabular baseline;
+-   relationship to `cultivating-ml-agent`: this is one of the
+    longitudinal capability-formation cases the agent ran through.
 
 ------------------------------------------------------------------------
 
