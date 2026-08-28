@@ -4,6 +4,12 @@
 
 # Kaggle Store Sales --- Capability Formation Case
 
+> **Language / 语言:** English primary · 中文概览如下。
+>
+> ### 中文概览
+> 使用公开时间序列竞赛作为可度量训练环境的纵向学习项目，沉淀预测实验和可复用机器学习知识。
+
+
 **A longitudinal learning project for TopPrism's Cultivating ML Agent,
 using a public time-series competition as a measurable training
 environment.**
