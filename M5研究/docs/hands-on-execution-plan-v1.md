@@ -45,6 +45,24 @@ Kaggle 页面显示 Accuracy 数据包约 450 MB，Uncertainty 数据包约 515 
 
 数据基础：3,049 个商品、10 个门店、3 个州、30,490 条底层 item-store 序列；官方层级评分覆盖 12 个层级、42,840 条序列。原始销售列是**已实现销售单位**，不是库存，也不等同于未受缺货截断的潜在需求。
 
+12 层级的序列数必须逐项核验，不可只核对总数：
+
+| Level | 聚合维度 | 序列数 |
+|---:|---|---:|
+| 1 | Total | 1 |
+| 2 | State | 3 |
+| 3 | Store | 10 |
+| 4 | Category | 3 |
+| 5 | Department | 7 |
+| 6 | State × Category | 9 |
+| 7 | State × Department | 21 |
+| 8 | Store × Category | 30 |
+| 9 | Store × Department | 70 |
+| 10 | Item | 3,049 |
+| 11 | Item × State | 9,147 |
+| 12 | Item × Store | 30,490 |
+| **合计** | | **42,840** |
+
 ### 1.3 时间边界（不可修改）
 
 | 区间 | 日序号 | 作用 |
