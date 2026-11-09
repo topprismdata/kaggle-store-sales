@@ -1,0 +1,16 @@
+# M5 competition data must be fetched under Kaggle's terms
+data/
+raw/
+datasets/
+artifacts/
+runs/
+outputs/
+*.parquet
+*.feather
+*.pkl
+*.joblib
+*.pt
+*.ckpt
+.ipynb_checkpoints/
+__pycache__/
+.DS_Store

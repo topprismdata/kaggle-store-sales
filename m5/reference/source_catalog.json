@@ -1,0 +1,72 @@
+{
+  "version": "1.0",
+  "status": "SOURCE_LINKS_VERIFIED_DOWNLOADS_NOT_REDISTRIBUTED",
+  "source_repository": "https://github.com/Mcompetitions/M5-methods",
+  "companion_folder": "https://drive.google.com/drive/folders/1D6EWdVSaOtrP1LEFh1REjI3vej6iUS_4",
+  "official_references": [
+    {
+      "id": "dataset_validation",
+      "filename": "weights_validation.csv",
+      "file_id": "1-yjyAXJeuUQWXloCi9yC1LNO7Qtl1hcH",
+      "bytes": 2242706,
+      "rows": 42840,
+      "fields": [
+        "Level_id",
+        "Agg_Level_1",
+        "Agg_Level_2",
+        "Dollar_Sales",
+        "weight"
+      ]
+    },
+    {
+      "id": "dataset_evaluation",
+      "filename": "weights_evaluation.csv",
+      "file_id": "1M37c__ioZChCYpY69oXSzBi3bKrKVEkN",
+      "bytes": 2257736,
+      "rows": 42840,
+      "fields": [
+        "Level_id",
+        "Agg_Level_1",
+        "Agg_Level_2",
+        "Dollar_Sales",
+        "weight"
+      ]
+    },
+    {
+      "id": "compact_validation",
+      "filename": "weights_validation.csv",
+      "file_id": "1KGhwZO23VtCUViyBJMfNZdMIGnPPx5QF",
+      "bytes": 1553220,
+      "rows": 42840,
+      "fields": [
+        "Level_id",
+        "Agg_Level_1",
+        "Agg_Level_2",
+        "Weight"
+      ]
+    },
+    {
+      "id": "estimate_wrmsse_r",
+      "filename": "Estimate WRMSSE.R",
+      "file_id": "1K9nCkHB1n_OClVGSRmKvMqAGY9KhBXFf",
+      "bytes": 10785
+    },
+    {
+      "id": "estimate_weights_r",
+      "filename": "Estimate weights.R",
+      "file_id": "1nCRWaxzeSshpPn77Wqvaa3C1xXqtTwM5",
+      "bytes": 5179
+    },
+    {
+      "id": "evaluation_accuracy_r",
+      "filename": "M5_Evaluation_Accuracy.R",
+      "file_id": "13uI3k_VtrO6oceTJE2kk0-NF05s2x1OW",
+      "bytes": 11068
+    }
+  ],
+  "validation_cross_check": {
+    "matching_keys": 42840,
+    "max_absolute_difference": 4.9999e-8
+  },
+  "sha256_status": "TO_CAPTURE_ON_EXECUTION_MACHINE"
+}
