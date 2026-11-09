@@ -3,56 +3,70 @@
 > 本 Runbook 可以直接交给研发执行。所有命令默认从仓库根目录运行。  
 > 首周只做 M5 Accuracy；Uncertainty 数据和概率模型放到 W3。
 
-## A. Owner 开始前需要完成的两件事
+## A. Owner 开始前需要完成的三件事
 
-1. 登录 Kaggle，打开 [M5 Accuracy 数据页](https://www.kaggle.com/competitions/m5-forecasting-accuracy/data)，点击接受竞赛规则。
-2. 指定一个数据保管人和一台规范运行机。建议团队 Linux 主机负责规范运行；Mac 可用于审阅与轻量探索。
+1. **Kaggle 规则接受人**：由 Owner 指定一名已登录 Kaggle 并接受 M5 Accuracy 竞赛规则的团队成员；姓名/账号和接受日期写入 G0 manifest。
+2. **数据保管人**：由 Owner 指定一名研发负责人，负责下载、只读保管、SHA-256 清单和访问控制。可以与规则接受人为同一人，但必须分别登记角色。
+3. **运行环境**：团队 Linux 仍为规范实验环境；Owner 的 Windows 11 工作站登记为开发/冒烟环境。Windows run 与 Linux canonical run 的硬件字段、配置、结果目录分开，不能合并成绩。
 
-不要把 Kaggle token 发到聊天、GitHub、Notebook 或命令行日志中。当前 Kaggle CLI 推荐 OAuth `kaggle auth login`；也支持 API token 环境变量和 `~/.kaggle/access_token`。具体参照 [Kaggle CLI 官方文档](https://github.com/Kaggle/kaggle-cli/blob/main/docs/README.md)。
+当前规则接受人和数据保管人尚未命名，故 G0 仍为 BLOCKED。不要把 Kaggle token 发到聊天、GitHub、Notebook 或命令行日志中。Kaggle CLI 推荐 OAuth `kaggle auth login`；参见 [Kaggle CLI 官方文档](https://github.com/Kaggle/kaggle-cli/blob/main/docs/README.md)。
 
 ## B. 环境安装与认证
 
-### B1. Python 环境
+### B1. 统一版本
 
-要求 Python 3.11+（当前官方 Kaggle CLI 文档要求）。
+项目环境固定 Python **3.11.15 x64**。Owner 机器上的 Python 3.13.13 保留给其他工作，不作为本项目首轮规范版本。依赖直接版本固定在 `m5/requirements-py311.txt`；这是精确的顶层依赖 pin，尚非包含所有传递依赖哈希的完整 lockfile。Linux 环境登记后需生成其平台专属完整 lock。
 
-使用 venv 的示例：
+### B2. Windows PowerShell（开发/冒烟环境）
+
+项目路径使用 ASCII 目录 `m5/`，原始数据放 E 盘，不放 D 盘。启动 Python 前设置 UTF-8：
+
+```powershell
+$env:PYTHONUTF8 = "1"
+py -3.11 -m venv .venv
+.\\.venv\\Scripts\\Activate.ps1
+python -m pip install --upgrade pip
+python -m pip install -r m5\\requirements-py311.txt
+python m5\\scripts\\00_preflight.py
+```
+
+### B3. Linux（规范实验环境）
 
 ```bash
+export PYTHONUTF8=1
 python3.11 -m venv .venv
 source .venv/bin/activate
 python -m pip install --upgrade pip
-python -m pip install kaggle numpy pandas polars pyarrow scipy scikit-learn lightgbm statsforecast matplotlib pyyaml pytest ruff
+python -m pip install -r m5/requirements-py311.txt
+python m5/scripts/00_preflight.py
 ```
 
-如果使用 uv，可用 `uv venv --python 3.11` 建立隔离环境，依赖经首次验证后写入 lockfile。
+Windows 和 Linux 必须各自保存环境报告与锁文件。首轮 LightGBM 固定 CPU 后端，配置中固定 `deterministic=true`、`force_row_wise=true`、`num_threads` 和所有 seed；GPU 不作为 W1 的必要条件。
 
-### B2. Kaggle 登录
+### B4. Kaggle 登录
 
-```bash
+```powershell
 kaggle --version
 kaggle auth login
 kaggle competitions files m5-forecasting-accuracy
 ```
 
-若在无浏览器的服务器登录，使用 `kaggle auth login --no-launch-browser`，按终端给出的授权链接完成认证。也可以按官方文档设置 `KAGGLE_API_TOKEN` 或 token 文件。认证文件权限应限制为当前用户可读写。
+无浏览器服务器使用 `kaggle auth login --no-launch-browser`。认证文件仅保存在执行用户目录，权限限制为当前用户可读写。
 
 ## C. 下载数据
 
-```bash
-mkdir -p M5研究/data/raw/m5_accuracy
-kaggle competitions download m5-forecasting-accuracy \
-  --path M5研究/data/raw/m5_accuracy \
-  --unzip
+### C1. Windows（Owner 开发机）
+
+```powershell
+New-Item -ItemType Directory -Force E:\\m5-data\\raw\\m5_accuracy
+kaggle competitions download m5-forecasting-accuracy --path E:\\m5-data\\raw\\m5_accuracy --unzip
 ```
 
-如果项目工作目录本身就是 `M5研究/`，则改用：
+### C2. Linux（规范机）
 
 ```bash
-mkdir -p data/raw/m5_accuracy
-kaggle competitions download m5-forecasting-accuracy \
-  --path data/raw/m5_accuracy \
-  --unzip
+mkdir -p /srv/m5-data/raw/m5_accuracy
+kaggle competitions download m5-forecasting-accuracy --path /srv/m5-data/raw/m5_accuracy --unzip
 ```
 
 预期核心文件：
@@ -65,26 +79,23 @@ sell_prices.csv
 sample_submission.csv
 ```
 
-官方页面列出以上五个文件，Accuracy 数据包约 450.47 MB。若下载包中多出 README 或系统文件，先登记，不要静默删除。
+Accuracy 原始数据由 Kaggle 按竞赛规则提供。下载后不要把原始文件、压缩包或凭据上传 GitHub。
 
 ## D. 下载后第一时间留存数据指纹
 
-在项目根目录执行：
+**Windows PowerShell：**
 
-```bash
-python - <<'PY'
-from pathlib import Path
-import hashlib
-root = Path("M5研究/data/raw/m5_accuracy")
-for path in sorted(p for p in root.iterdir() if p.is_file()):
-    digest = hashlib.sha256(path.read_bytes()).hexdigest()
-    print(f"{digest}  {path.name}  {path.stat().st_size} bytes")
-PY
+```powershell
+python m5\\scripts\\fingerprint.py --input E:\\m5-data\\raw\\m5_accuracy --output m5\\runs\\manifests\\accuracy-data.json
 ```
 
-Linux 也可用 `sha256sum`。将结果、文件字节数、下载时间、Kaggle competition slug、数据授权人写入内部运行记录；**只提交不含凭据和原始数据的 manifest**。
+**Linux：**
 
-原始 CSV、压缩包、Kaggle token、模型权重和大型派生文件不得提交到 GitHub。仓库的 `.gitignore` 已忽略数据和运行目录，但执行者仍须检查 `git status --ignored`。
+```bash
+python m5/scripts/fingerprint.py --input /srv/m5-data/raw/m5_accuracy --output m5/runs/manifests/accuracy-data.json
+```
+
+脚本使用 Python 标准库，逐文件计算 SHA-256 和字节数，跨 Windows/Linux 可用，不依赖 Bash heredoc。将文件清单、下载时间、Kaggle competition slug、规则接受人和数据保管人写入 G0 运行记录。只提交不含原始数据和凭据的 manifest。
 
 ## E. 数据审计任务（Day 2）
 
@@ -124,11 +135,11 @@ Linux 也可用 `sha256sum`。将结果、文件字节数、下载时间、Kaggl
 
 1. 按 M5 官方 guide 构建 12 层级映射；底层 30,490 条序列，聚合后 42,840 条。
 2. 检查每条底层序列在每个层级中恰好归属正确组，聚合后总销量守恒。
-3. 先取官方 M5-methods 仓库的评分参考资料与 R 代码（仓库 README 链接的 companion Drive 包含评价代码、benchmark forecasts 和权重文件）。
+3. **Companion Drive 已在本会话连接的 Google Drive 中验证可列目录/下载**：已看到 `M5-Competitors-Guide.pdf`、`Estimate WRMSSE.R`、`Estimate weights.R`、`weights_validation.csv`、`weights_evaluation.csv`、`M5_Evaluation_Accuracy.R`、Accuracy template、24 个 Accuracy benchmark forecasts、50 个 Accuracy submissions，以及 validation 目录中的 point/probabilistic benchmark R 脚本。Day 3 负责人必须先下载并登记文件 SHA-256。
 4. 以官方实现为 reference；Python 实现必须逐层、逐序列与 reference 交叉验证。
 5. 若 reference 代码/权重暂时无法取得，记录 `SCORER_NOT_VERIFIED`，可以开发模型但不准对外报告“官方 WRMSSE”。
 
-必须记录权重计算时点、RMSSE scaling denominator、首个非零销售前的处理、12 层级权重与归一化方式。不得仅凭公式印象自行重写。
+必须记录权重计算时点、RMSSE scaling denominator、首个非零销售前的处理、12 层级权重与归一化方式。不得仅凭公式印象自行重写。\n\n**全零/零尺度门禁**：官方 guide 规定 RMSSE scale 从首个非零销售后计算；但本轮检查的 companion `Estimate WRMSSE.R` 在计算 `mean(diff(insample)^2)` 时没有显式的全零/零尺度 fallback。因此不能说官方 reference 已规定给全零序列赋 0 或 epsilon。Python scorer 必须对 all-zero history、active-history constant/zero-scale 显式抛出 `UndefinedRMSSEScaleError`；若真实数据触发，保持 `SCORER_NOT_VERIFIED`，先与官方评价脚本和官方数据分布核实，禁止静默跳过或加 epsilon。
 
 ## G. 基线模型（Day 4）
 
@@ -176,7 +187,7 @@ Linux 也可用 `sha256sum`。将结果、文件字节数、下载时间、Kaggl
 - [ ] 两个 sales 文件共有 d_1–d_1913 完全一致；
 - [ ] 日历/售价连接与未来可见性已审计；
 - [ ] 12 层级和 42,840 条聚合序列通过核验；
-- [ ] WRMSSE 与官方 reference 对照通过；
+- [ ] WRMSSE 与官方 reference 对照通过；\n- [ ] all-zero history、single-active-observation、constant-active-history 的零尺度单元测试通过；若正式数据触发零尺度，维持 `SCORER_NOT_VERIFIED` 并提交异常清单；
 - [ ] SeasonalNaive7 全量预测成功；
 - [ ] GlobalLightGBM smoke test 和全量 run 成功（若资源不允许，明确记录阻塞，不能伪报通过）；
 - [ ] 结果含 12 层级分解、分组诊断和 run manifest；
