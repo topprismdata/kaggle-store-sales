@@ -7,9 +7,9 @@ This is the executable research scaffold for the M5 Accuracy / Uncertainty repro
 - Code scaffold and preflight: added.
 - Windows development environment: owner-reported, registered.
 - Canonical Linux environment: designated, machine specification pending.
-- Official companion Drive: access verified through the connected Drive integration; the evaluation R scripts, weights, 24 Accuracy benchmark forecasts, and 50 Accuracy submissions are visible/downloadable.
+- Official companion Drive: access verified. Source links and the two different validation-weight variants are documented in [reference/README.md](reference/README.md). Official third-party files are not redistributed in this repository.
 - Kaggle rules acceptor and data custodian: **not yet named**.
-- Full scorer equivalence and M5 model runs: **not yet verified / not yet run**.
+- Engineer-reported Windows preflight, pytest, data dimensions and hierarchy counts are provisional until their output artifacts are independently reviewed.\n- Full scorer equivalence and M5 model runs: **not yet verified / not yet run**.
 
 ## Quick start — Windows PowerShell
 
@@ -35,7 +35,7 @@ python m5\scripts\01_audit_data.py --data-dir E:\m5-data\raw\m5_accuracy
 python m5\scripts\02_verify_hierarchy.py --data-dir E:\m5-data\raw\m5_accuracy
 ```
 
-The audit scripts are data-contract checks; passing them does not imply that WRMSSE has been verified against the official reference.
+These scripts currently check **file dimensions** and **hierarchy counts**, respectively. Passing does NOT prove unique IDs, sales-train historical equality, correct price joins or 12-level aggregation conservation. G1/G2 full audit still requires those tests.\n\nFor G3 source acquisition and strict per-key score checks, see [G3 / LightGBM contract](docs/w1-g3-and-lgbm-contract-v1.1.md). Download official weight files to E:/m5-data/reference (not Git) then run the cross-platform validator: `python m5/scripts/05_validate_reference_weights.py --validation E:/m5-data/reference/weights_validation.csv --evaluation E:/m5-data/reference/weights_evaluation.csv --output m5/runs/reference_weights_audit.json`. This validates weight data only; it is not an official scorer.
 
 ## WRMSSE zero-scale policy
 
