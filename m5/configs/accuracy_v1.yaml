@@ -1,0 +1,45 @@
+project:
+  name: m5-hands-on-reproduction
+  track: accuracy
+  protocol_version: accuracy-v1
+  python: "3.11.15"
+  random_seed: 20261109
+  timezone: UTC
+
+data:
+  # Prefer M5_DATA_DIR environment variable; Windows owner machine uses E:/m5-data/raw/m5_accuracy.
+  raw_dir: "E:/m5-data/raw/m5_accuracy"
+  sales_validation: sales_train_validation.csv
+  sales_evaluation: sales_train_evaluation.csv
+  calendar: calendar.csv
+  prices: sell_prices.csv
+  sample_submission: sample_submission.csv
+  expected_bottom_series: 30490
+  expected_hierarchy_series: 42840
+  horizon: 28
+
+forecast:
+  origin: 1913
+  horizon: 28
+  non_negative: true
+  model_name: seasonal_naive_7
+
+lightgbm:
+  objective: regression
+  boosting_type: gbdt
+  deterministic: true
+  force_row_wise: true
+  device_type: cpu
+  num_threads: 28
+  seed: 20261109
+  feature_fraction_seed: 20261109
+  bagging_seed: 20261109
+  data_random_seed: 20261109
+  verbosity: -1
+
+reproducibility:
+  save_config_copy: true
+  save_data_manifest: true
+  save_environment_report: true
+  save_prediction_sha256: true
+  never_overwrite_run: true
