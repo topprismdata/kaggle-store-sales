@@ -20,6 +20,13 @@
 | 实验复现 | 可证伪假设、E1–E4、验收闸门 | [实验计划](docs/experiment-plan.md) |
 | 证据边界 | 已有论文结果 ≠ 自行复现 ≠ 实际运营收益 | [证据清单](docs/evidence-register.md) |
 
+## Hands-on 实战状态
+
+**计划已完成，实验尚未启动。** 第一周先完成 Accuracy 数据审计、12 层级聚合、官方 WRMSSE 评分器核验和两个简单基线；未通过官方评分器交叉验证，不报告“官方 WRMSSE”。
+
+- [四周执行计划](docs/hands-on-execution-plan-v1.md)
+- [第一周执行 Runbook](docs/week1-runbook.md)
+
 ## 演示文稿
 
 **[M5研究 — HTML Deck（44 页）](deck/index.html)**
