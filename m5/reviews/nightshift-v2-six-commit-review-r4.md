@@ -11,6 +11,7 @@
 
 - 六份 `git format-patch` 均在隔离 Git 工作区顺序通过 `git apply --check` 与 `git apply`。
 - 在从补丁重建的源码基础上，结合规范分支原有基础模块/测试契约，运行 `pytest`：**20/20 PASS**；隔离环境 Python 3.13 / numpy 2.3.5 / pandas 2.2.3 / LightGBM 4.6.0，与工程师 Windows 3.11.15 / LightGBM 4.7.0 不同。因此这不是规范机的完整锁环境重跑。
+- 另提交经审查可独立接受的 `models/seasonal_naive.py`（等价的简单周基线实现）及三个定向验收测试到 **review 分支**；新增 3 项后隔离测试 **23/23 PASS**。这不代表完整补丁被接受或其余 P0 已关闭。
 - 新增独立合成反例：多序列日历行对齐、未来价格扰动、正权重无效 scale、极端零销量 qcut、日期窗口边界、错误 Dollar_Sales 的交叉校验、冻结哈希一致性。
 - 复核证据 JSON 的六窗口 WRMSSE、12 层平均和 G3 全精度比较。
 - 本环境没有官方 M5 原始销售矩阵及执行者完整模型日志；所有真实数据训练成绩仍列 `ENGINEER_REPORTED / ARTIFACT_INTERNALLY_CHECKED`，不能写为独立重跑。
