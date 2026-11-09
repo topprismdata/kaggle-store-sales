@@ -20,6 +20,11 @@
 | 概率协调 | Panagiotelis et al., *Probabilistic Forecast Reconciliation* (2023) | https://doi.org/10.1016/j.ejor.2022.07.040 | 联合/层级一致性框架 | 需定义有效的联合分布 |
 | 服饰外推边界 | Sousa et al., *Predicting demand for new products in fashion retailing using censored data* (2025) | https://doi.org/10.1016/j.eswa.2024.125313 | 缺货截断、冷启动需求恢复 | 非 M5；仅用于说明外推难题 |
 
+
+| 跨时间概率协调 | Girolimetto et al., *Cross-temporal probabilistic forecast reconciliation* (2024) | https://doi.org/10.1016/j.ijforecast.2023.10.003 | 同时满足跨截面与时间聚合约束；Gaussian 与 bootstrap 情景、multi-step residual covariance | 论文实证为澳大利亚 GDP 与旅游需求，不是 M5；需重新验证迁移价值 |
+| 概率协调后续 | Girolimetto & Di Fonzo, *Cross-temporal forecast reconciliation: insights on sequential, iterative, and optimal approaches* (2026 issue) | https://doi.org/10.1007/s10260-025-00822-z | 更新 cross-temporal reconciliation 的顺序、迭代与最优路线 | 不是 M5 专属研究 |
+| 多变量评分 | Scheuerer & Hamill (2015), *Variogram-based proper scoring rules for probabilistic forecasts of multivariate quantities* | https://doi.org/10.1175/MWR-D-14-00269.1 | Variogram score 可用于检查多变量依赖结构 | 评分选择与应用维度/阶数相关，不能替代决策损失 |
+
 ## 官方资源
 
 - M5 Accuracy：https://www.kaggle.com/competitions/m5-forecasting-accuracy
