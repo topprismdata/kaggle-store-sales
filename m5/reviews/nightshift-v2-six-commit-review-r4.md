@@ -26,6 +26,8 @@
 
 特别说明：独立最小反例令 `Level1` 的 `w=1`、`scale=NaN`，实际传到汇总器的 `score=0.0` 并返回成功；不触发新 `wrmsse_from_levels()` 的 ValueError。
 
+**进一步做了实际入口级复验：** 使用合成注入/monkeypatch 直接调用本次提交的 `04_score_wrmsse.py::main()`（不是手工改写其逻辑），设置 Level1 `w=1.0, scale=NaN`，最终进程返回 **exit code 0**，输出 `status: PASS`、`overall_wrmsse: 0.4583333333333333`。该集成反例证实 P0 仍然可从正式 CLI 入口逃逸。
+
 ## 3. 新发现的 G3 P0：校验差异不阻断 PASS
 
 `04_score_wrmsse.py:211-242` 的 `_crosscheck_weights()` 即使 `Dollar_Sales` 相差巨大，仍无条件返回 `{"status":"OK", "dollar_sales_max_rel_diff":...}`；`main()` 又无差异门槛而写 `status:"PASS"`。
