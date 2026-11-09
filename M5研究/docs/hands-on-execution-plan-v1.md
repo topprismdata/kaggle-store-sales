@@ -1,6 +1,6 @@
 # M5 Hands-on Reproduction — 执行计划 V1.0
 
-**状态：READY FOR TEAM EXECUTION（待 Owner 确认执行环境与 Kaggle 数据权限）**  
+**状态：SCAFFOLD_READY / EXECUTION_G0_BLOCKED**。Windows 开发骨架与 preflight 已提交；真实运行仍待 Kaggle 规则接受人、数据保管人和数据下载登记。  
 **计划周期：4 周；第一周为强制启动门**  
 **目标：亲自复现 M5 关键预测任务，建立从数据、评分、概率分布到库存模拟的可重复实验链。**
 
@@ -79,68 +79,63 @@ Kaggle 页面显示 Accuracy 数据包约 450 MB，Uncertainty 数据包约 515 
 
 ## 2. 机器与软件策略
 
-### 2.1 计算分工
+### 2.1 计算分工（已登记）
 
-- **规范实验环境**：团队 Linux 计算机；记录 CPU、RAM、GPU、驱动、CUDA、OS。
-- **MacBook Pro M1 Max 64 GB**：数据探索、报告审阅、轻量 CPU 基线和结果可视化；不把它伪装成 CUDA 环境。
-- **首轮模型**：LightGBM CPU 优先。M5 数据规模不构成强制 GPU 的理由；LightGBM 的 GPU 后端与 CUDA 不是可直接互换的概念。只有当某个候选模型明确支持并验证 GPU 后端时，才单独登记 GPU 实验。
-- 所有模型必须使用同一数据切分、信息集、指标实现和预测粒度；硬件不同需记录环境，不能将不同预算结果直接比较。
+- **规范实验环境**：团队 Linux 计算机，仍指定为 canonical；CPU、RAM、GPU、driver/CUDA、OS、Python、磁盘和线程数待团队登记。
+- **开发/冒烟环境**：Owner Windows 11 build 26300 工作站（配置详见 [环境登记](../../m5/docs/environment-register.md)）：i7-14700KF、20 核/28 线程、64GB RAM、RTX 3080 Ti（20GB 为 Owner 提供，需 nvidia-smi 复核）、driver 581.94。
+- **数据目录**：Owner Windows 机放 E:\\m5-data；D 盘仅剩 24.5GB，不用于数据；Linux 机由团队登记实际数据卷。
+- **Python**：项目统一 Python 3.11.15 x64。Owner 默认 Python 3.13.13 保留，不作为首轮规范项目环境。
+- Windows run 与 Linux canonical run 必须使用独立 hardware_id、config、environment lock 和结果命名空间，不能混报。
 
-### 2.2 版本基线
+### 2.2 版本与确定性
 
-- Python 3.11（当前 Kaggle CLI 文档要求 Python 3.11+）。
-- 使用独立虚拟环境；推荐 `uv` 或 `venv`。
-- 首轮依赖：`kaggle`、`numpy`、`pandas`、`polars`、`pyarrow`、`scipy`、`scikit-learn`、`lightgbm`、`statsforecast`、`matplotlib`、`pyyaml`、`pytest`、`ruff`。
-- 首次安装成功后立即锁定精确版本并提交 lockfile；不要长期使用无版本边界的 requirements。
-- 数据审计可用 Polars/Arrow；模型输入输出优先 Parquet，原始 CSV 保持只读。
+- 直接依赖版本固定在 `m5/requirements-py311.txt`。这是精确的顶层依赖 pin，尚不是 hash-complete 的传递依赖 lockfile；Linux 规范机登记后生成自己的平台专属完整 lock。
+- 首轮 LightGBM CPU 优先；配置固定 `deterministic=true`、`force_row_wise=true`、`num_threads=28`（Windows 开发配置）及所有 seed。Linux 的线程数在硬件登记后单独冻结。
+- 项目代码目录统一 ASCII：`m5/`。Windows 启动 Python 前设置 `PYTHONUTF8=1`；preflight 检查 UTF-8、Python 版本、项目路径和依赖。
+- M5 原始 CSV、模型权重、预测文件和运行产物不得提交 GitHub。
+- 不为使用 GPU 而引入额外复杂度；如以后验证 LightGBM GPU/OpenCL 或其他 GPU 模型，单独登记设备和后端，不与 CPU run 混调。
 
 ## 3. Kaggle 数据获取
 
-先由数据管理员在浏览器中接受 Accuracy 竞赛规则，再在有权限的执行机上认证。
+先由 Owner 指定的 Kaggle 规则接受人，在浏览器中接受 Accuracy 竞赛规则；数据保管人负责下载和数据指纹。两个人员角色目前尚未登记，G0 保持 BLOCKED。
 
 当前 Kaggle CLI 文档支持 OAuth `kaggle auth login`、`KAGGLE_API_TOKEN`、`~/.kaggle/access_token`，并保留 legacy 凭据方式。优先 OAuth；不要把 token、`kaggle.json` 或任何认证文件放进仓库、Notebook 输出或日志。
 
-首周下载命令见 [第一周 Runbook](week1-runbook.md)。下载后记录文件大小与 SHA-256。**原始 CSV、解压包、token、派生大文件和模型权重不得提交 GitHub。**
+M5-methods companion Drive 当前已通过连接的 Google Drive 验证可列目录和下载：Guide PDF、WRMSSE/weights R 脚本、validation/evaluation 权重、24 个 Accuracy benchmark forecasts、50 个 Accuracy submissions 和 validation 评价代码均已可见。首周下载命令见 [第一周 Runbook](week1-runbook.md)。下载后记录文件大小与 SHA-256。**原始 CSV、解压包、token、派生大文件和模型权重不得提交 GitHub。**
 
 ## 4. 代码目录与职责
 
-建议在 `M5研究/` 下建立：
+可执行代码统一放 ASCII 路径 `m5/`，研究文档继续放 `M5研究/`：
 
 ```text
-M5研究/
+m5/
 ├── README.md
-├── deck/
-├── docs/
+├── requirements-py311.txt
 ├── configs/
-│   └── accuracy_v1.yaml
+│   ├── accuracy_v1.yaml
+│   └── environment.windows-dev.yaml
 ├── src/m5research/
-│   ├── io.py                 # 原始文件读取与数据契约
-│   ├── hierarchy.py          # 12 层级映射、聚合矩阵
-│   ├── features.py           # 仅基于预测起点前数据的特征
-│   ├── metrics/
-│   │   └── wrmsse.py         # 官方协议实现/适配器
-│   ├── models/
-│   │   ├── seasonal_naive.py
-│   │   └── global_lgbm.py
-│   ├── forecast.py           # 28 天滚动预测
-│   └── reporting.py          # 分层诊断和图表
+│   ├── preflight.py
+│   ├── hierarchy.py
+│   ├── features.py
+│   └── metrics/wrmsse.py
 ├── scripts/
 │   ├── 00_preflight.py
+│   ├── fingerprint.py
 │   ├── 01_audit_data.py
 │   ├── 02_verify_hierarchy.py
 │   ├── 03_run_baselines.py
 │   └── 04_score_wrmsse.py
 ├── tests/
-│   ├── test_data_contract.py
-│   ├── test_hierarchy.py
 │   ├── test_wrmsse.py
+│   ├── test_hierarchy.py
 │   └── test_no_future_leakage.py
-├── data/                     # gitignored
-├── artifacts/                # gitignored
-└── runs/                     # gitignored
+├── data/       # gitignored
+├── artifacts/  # gitignored
+└── runs/       # gitignored
 ```
 
-文件职责不可混用：`io.py` 不做模型特征；`hierarchy.py` 不负责评分；`wrmsse.py` 不自行猜测权重；`features.py` 必须显式接收 forecast origin；`forecast.py` 保存每个预测起点的输入时间戳。
+当前提交的是**执行骨架**，不是完整模型管线：preflight、SHA-256 指纹、层级计数、滞后 rolling helper 和 WRMSSE 单序列基础函数已存在；全量层级聚合评分、Seasonal Naive/LightGBM runner 仍需继续实现。未完成部分不得标成可运行。
 
 ## 5. 四周实施路线
 
@@ -170,7 +165,7 @@ W2 不承诺第一时间复刻冠军完整 220 模型；先复刻其方法结构
 - 从官方 M5 guide、官方方法仓库及官方 R 评价代码建立参考实现。
 - 底层预测必须为 30,490 × 28；再按官方层级映射聚合为 42,840 条序列。
 - 逐层核验 12 个序列数、聚合和、尺度项、权重及权重归一化。
-- WRMSSE 以官方口径为准；先用官方参考预测/已知评分交叉核验，再对本地预测打分。
+- WRMSSE 以官方口径为准；先用官方参考预测/已知评分交叉核验，再对本地预测打分。\n- 对 all-zero history、single active observation、constant active history 做显式零尺度测试；不加 epsilon、不默认为 0、不静默剔除。\n- 本轮检查的 companion `Estimate WRMSSE.R` 没有零尺度 fallback；若数据中出现该情形，先维持 `SCORER_NOT_VERIFIED`，与官方数据和 reference 进一步核实。
 - 如果无法获得官方参考代码/文件，状态记为 `SCORER_NOT_VERIFIED`，不得宣布评分器通过或发布模型排名。
 
 ### W1-C：基线
@@ -209,7 +204,7 @@ Global LightGBM 首轮目标训练样本使用每条序列最近 365 个可训�
   "seed": 20261109,
   "model": "...",
   "metric_version": "...",
-  "hardware": "...",
+  "hardware": "...",\n  "hardware_id": "windows-dev-owner-reported | linux-canonical",\n  "python_version": "3.11.15",\n  "num_threads": 28,
   "started_at": "...",
   "finished_at": "...",
   "status": "..."
