@@ -1,4 +1,4 @@
-# M5 Hands-on — 第一周执行 Runbook
+# M5 Hands-on — 第一周执行 Runbook V1.1
 
 > 本 Runbook 可以直接交给研发执行。所有命令默认从仓库根目录运行。  
 > 首周只做 M5 Accuracy；Uncertainty 数据和概率模型放到 W3。
