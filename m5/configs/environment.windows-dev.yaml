@@ -1,0 +1,33 @@
+environment_id: windows-dev-owner-reported
+role: development-and-smoke-test
+status: OWNER_REPORTED_NOT_INDEPENDENTLY_VERIFIED
+os: "Windows 11 build 26300"
+cpu: "Intel Core i7-14700KF"
+physical_cores: 20
+logical_threads: 28
+ram_gb: 64
+gpu: "NVIDIA RTX 3080 Ti"
+gpu_vram_gb_owner_reported: 20
+nvidia_driver: "581.94"
+python_default: "3.13.13"
+python_project: "3.11.15"
+kaggle_cli: "2.2.4"
+git: "2.55"
+data_volume: "E:"
+forbidden_data_volume: "D: (only 24.5 GB free at registration)"
+other_free_space_owner_reported:
+  C_gb: 628
+  E_gb: 1760
+  G_gb: 597
+utf8:
+  required: true
+  environment_variable: PYTHONUTF8
+  value: "1"
+thread_policy:
+  lightgbm_num_threads: 28
+  deterministic: true
+  force_row_wise: true
+notes:
+  - "This machine is for development, smoke tests, and exploratory analysis."
+  - "Do not combine its run scores with canonical Linux runs."
+  - "Record actual GPU VRAM from nvidia-smi; owner-provided 20 GB has not been independently verified."
