@@ -72,9 +72,14 @@ sample_submission.csv
 在项目根目录执行：
 
 ```bash
-find "M5研究/data/raw/m5_accuracy" -maxdepth 1 -type f -print0 \
-  | sort -z \
-  | xargs -0 shasum -a 256
+python - <<'PY'
+from pathlib import Path
+import hashlib
+root = Path("M5研究/data/raw/m5_accuracy")
+for path in sorted(p for p in root.iterdir() if p.is_file()):
+    digest = hashlib.sha256(path.read_bytes()).hexdigest()
+    print(f"{digest}  {path.name}  {path.stat().st_size} bytes")
+PY
 ```
 
 Linux 也可用 `sha256sum`。将结果、文件字节数、下载时间、Kaggle competition slug、数据授权人写入内部运行记录；**只提交不含凭据和原始数据的 manifest**。
