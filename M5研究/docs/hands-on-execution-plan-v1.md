@@ -1,4 +1,4 @@
-# M5 Hands-on Reproduction — 执行计划 V1.0
+# M5 Hands-on Reproduction — 执行计划 V1.1
 
 **状态：SCAFFOLD_READY / EXECUTION_G0_BLOCKED**。Windows 开发骨架与 preflight 已提交；真实运行仍待 Kaggle 规则接受人、数据保管人和数据下载登记。  
 **计划周期：4 周；第一周为强制启动门**  
