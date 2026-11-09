@@ -1,0 +1,14 @@
+data/
+artifacts/
+runs/
+outputs/
+*.parquet
+*.feather
+*.pkl
+*.joblib
+*.pt
+*.ckpt
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+.venv/
