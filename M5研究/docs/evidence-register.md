@@ -10,7 +10,6 @@
 | 更低预测误差未必带来最低库存成本 | 库存模拟论文 | SOURCE_REPORTED | SIMULATED 而非实际经营实验 |
 | 概率预测必须检验校准与锐度 | 概率预测方法学论文 | METHODOLOGY | 必须按分组和时间检验 |
 | 跨区域分位数可直接相加 | 数学上一般不成立 | REJECTED | 需联合情景 |
-| RMSSE active-history zero-scale 的官方 fallback 已明确规定 | 当前检查的 companion R 脚本 | NOT_SUPPORTED_BY_INSPECTED_CODE | 脚本未见显式 fallback；须核实数据是否触发 |\n| companion `Estimate WRMSSE.R` 对零尺度显式 fallback | 当前检查的官方 companion R 脚本 | NOT_SUPPORTED_BY_INSPECTED_CODE | 未发现 all-zero/zero-scale 专门分支；不得声称官方指定 epsilon/zero 约定 |\n| 同边际不同依赖会改变共享库存尾部风险 | 数学构造反例 | THEORETICAL_DEMONSTRATION | 真实 M5 增量待检验 |
 | 本仓库复现了冠军成绩 | 无实验报告 | NOT_VERIFIED | 禁止宣称 |
 | 本仓库证明了利润增长 | 无经营干预 | NOT_VERIFIED | 禁止宣称 |
 
@@ -24,3 +23,4 @@
 - **CAUSAL_FIELD_EVIDENCE**：需有真实可执行策略的可信前瞻性对照。
 
 **当前材料均不达到 INDEPENDENTLY_REPRODUCED 或 CAUSAL_FIELD_EVIDENCE。**
+| companion `Estimate WRMSSE.R` 对零尺度是否有显式 fallback | 当前检查的官方 companion R 脚本 | NOT_SUPPORTED_BY_INSPECTED_CODE | 未发现 all-zero/zero-scale 专门分支；不得声称官方指定 epsilon/zero 约定 |
