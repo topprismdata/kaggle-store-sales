@@ -141,6 +141,27 @@ python m5/scripts/fingerprint.py --input /srv/m5-data/raw/m5_accuracy --output m
 
 必须记录权重计算时点、RMSSE scaling denominator、首个非零销售前的处理、12 层级权重与归一化方式。不得仅凭公式印象自行重写。\n\n**全零/零尺度门禁**：官方 guide 规定 RMSSE scale 从首个非零销售后计算；但本轮检查的 companion `Estimate WRMSSE.R` 在计算 `mean(diff(insample)^2)` 时没有显式的全零/零尺度 fallback。因此不能说官方 reference 已规定给全零序列赋 0 或 epsilon。Python scorer 必须对 all-zero history、active-history constant/zero-scale 显式抛出 `UndefinedRMSSEScaleError`；若真实数据触发，保持 `SCORER_NOT_VERIFIED`，先与官方评价脚本和官方数据分布核实，禁止静默跳过或加 epsilon。
 
+### F1. 官方 reference 下载与校验（新增）
+
+已确认 Dataset/weights_validation.csv 与 validation/weights_validation.csv 是两份不同精度的同名文件。主参考选 Dataset 目录中的五列版本，Evaluation 对应另一训练截止时点；全部按 Level_id、Agg_Level_1、Agg_Level_2 连接，禁止按行顺序对齐。
+
+下载入口、确切文件 ID、字节数与关键 R 公式的独立释义见 [m5/reference/README.md](../../m5/reference/README.md)。官方文件原件存于本地 E:/m5-data/reference，不得提交公开仓库。
+
+PowerShell 命令：
+
+```powershell
+python m5\scripts\05_validate_reference_weights.py --validation E:\m5-data\reference\weights_validation.csv --evaluation E:\m5-data\reference\weights_evaluation.csv --compact-validation E:\m5-data\reference\weights_validation_compact.csv --output m5\runs\reference_weights_audit.json
+```
+
+脚本仅检查 reference 结构、键、权重与金额口径；它不是官方 scorer。本地工程师须实现逐序列 scale、逐层聚合、官方 benchmark 复算后，才能把 G3 改为 PASS。若 reference 文件权限在执行机不同，采用授权的浏览器下载并记录哈希，不将凭据发给协作方。
+
+### F2. G1/G2 验收范围澄清
+
+01_audit_data.py 目前覆盖行数、列数、主要列名；02_verify_hierarchy.py 目前覆盖十二层级 group counts。二者未完整验证历史矩阵一致性、ID 唯一性、价格 join、销售非负整数、聚合守恒。其 PASS 应分别记为 STRUCTURE_PASS / COUNTS_PASS，完整 G1/G2 仍需补充测试。
+
+### F3. LightGBM 实现契约
+
+独立、可执行的冻结要求见 [m5/docs/w1-g3-and-lgbm-contract-v1.1.md](../../m5/docs/w1-g3-and-lgbm-contract-v1.1.md)。对于未来价格可见性未证实的情况，主实验先不使用未知未来价格；如需要，可单独运行未来价格已知的敏感性实验。
 ## G. 基线模型（Day 4）
 
 ### G1. SeasonalNaive7
