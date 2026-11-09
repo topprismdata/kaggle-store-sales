@@ -9,7 +9,7 @@ This is the executable research scaffold for the M5 Accuracy / Uncertainty repro
 - Canonical Linux environment: designated, machine specification pending.
 - Official companion Drive: access verified. Source links and the two different validation-weight variants are documented in [reference/README.md](reference/README.md). Official third-party files are not redistributed in this repository.
 - Kaggle rules acceptor and data custodian: **not yet named**.
-- Engineer-reported Windows preflight, pytest, data dimensions and hierarchy counts are provisional until their output artifacts are independently reviewed.\n- Full scorer equivalence and M5 model runs: **not yet verified / not yet run**.
+- Engineer-reported Windows preflight, pytest, data dimensions and hierarchy counts are provisional until their output artifacts are independently reviewed.\n- Nightshift-02 engineer report: full 42,840-key validation weight parity, 12/12 evaluation sNaive benchmark parity, plus validation baselines (Naive7=0.8697; Mean28=0.7607). These are **ENGINEER_REPORTED** while actual local source/diff and evidence JSON are unavailable here; official sNaive 0.8470173528438624 verified from `Scores and Ranks.xlsx`. [G3 review decision](docs/nightshift02-g3-review.md).
 
 ## Quick start — Windows PowerShell
 
