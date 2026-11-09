@@ -10,7 +10,8 @@
 | 更低预测误差未必带来最低库存成本 | 库存模拟论文 | SOURCE_REPORTED | SIMULATED 而非实际经营实验 |
 | 概率预测必须检验校准与锐度 | 概率预测方法学论文 | METHODOLOGY | 必须按分组和时间检验 |
 | 跨区域分位数可直接相加 | 数学上一般不成立 | REJECTED | 需联合情景 |
-| 同边际不同依赖会改变共享库存尾部风险 | 数学构造反例 | THEORETICAL_DEMONSTRATION | 真实 M5 增量待检验 |\n| 本仓库复现了冠军成绩 | 无实验报告 | NOT_VERIFIED | 禁止宣称 |
+| 同边际不同依赖会改变共享库存尾部风险 | 数学构造反例 | THEORETICAL_DEMONSTRATION | 真实 M5 增量待检验 |
+| 本仓库复现了冠军成绩 | 无实验报告 | NOT_VERIFIED | 禁止宣称 |
 | 本仓库证明了利润增长 | 无经营干预 | NOT_VERIFIED | 禁止宣称 |
 
 ## 证据等级
