@@ -23,8 +23,8 @@
 | `SCALE_SOURCE_OFFICIAL_WEIGHTS_SELF_SCALES` + fabricated nonempty weight SHA, **no --reference-dir** | PASS. Same bug. |
 | Foreign absolute score prediction path ending in `<run_id>/forecast.csv` | PASS. Only `endswith`, no normalized exact path compare; 07:225–231. |
 | `run_manifest.forecast_file` names unrelated foreign file | PASS. No exact binding to actually loaded `fc_path`. |
-| Custom origin 1857 claims a **genuine existing evaluation** reference SHA with provided --reference-dir | PASS. Reference hash set not linked to origin/round. |
-| Custom origin 1885 claims a **genuine existing validation** reference SHA with provided --reference-dir | PASS. Same origin mismatch. |
+| Custom origin 1857 claims a **present synthetic evaluation** reference SHA with provided --reference-dir | PASS. Reference hash set not linked to origin/round. |
+| Custom origin 1885 claims a **present synthetic validation** reference SHA with provided --reference-dir | PASS. Same origin mismatch. |
 | Explicit reference directory exists but contains **zero valid reference files**; OFFICIAL claim has fake SHA | PASS. `known=empty` wrongly accepted. |
 
 ## Source-level root causes and minimal exit
