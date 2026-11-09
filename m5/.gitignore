@@ -12,3 +12,9 @@ __pycache__/
 .pytest_cache/
 .ruff_cache/
 .venv/
+
+# Official M5 method/data assets must be kept local; publish links and hashes only.
+reference/local/
+reference/*.csv
+reference/*.R
+reference/*.r
