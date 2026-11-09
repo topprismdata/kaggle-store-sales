@@ -21,7 +21,7 @@
 - RMSSE scale 必须按官方规则，从首个非零观测后的 active history 计算；不得随意换历史窗口或分母。
 - 对每条序列记录 first_nonzero_index、active_history_length、scale、weight 和状态。
 - **零尺度处理纪律**：全零历史、仅一个 active observation、active history 恒定（scale=0）必须显式触发 undefined-scale 状态。禁止加 epsilon、强制设为 0 或静默删除。
-- 本轮检查的 companion `Estimate WRMSSE.R` 通过 first non-zero 截取 active history，但计算 `mean(diff(insample)^2)` 时没有显式零尺度 fallback。官方 Accuracy 论文也指出 RMSSE 在 naive scale 全零时可能 undefined/infinite。若正式数据触发，先标记 `SCORER_NOT_VERIFIED`，提交逐序列诊断并核实官方评测路径，不自行编造官方约定。
+- 本轮检查的 companion `Estimate WRMSSE.R` 通过 first non-zero 截取 active history，但计算 `mean(diff(insample)^2)` 时没有显式零尺度 fallback。官方 Accuracy 论文指出 RMSSE 在 naive scale 为零时可能 undefined/infinite。论文报告的 883 条 zero-weight series（因最近 28 天销售金额为零）**不等于** 883 条 zero-scale series；权重为零与 RMSSE 分母为零是不同问题。若正式数据触发 zero scale，先标记 `SCORER_NOT_VERIFIED`，提交逐序列诊断并核实官方评测路径，不自行编造官方约定。
 - 权重须按官方金额与层级规则构造，归一化检查；每层权重和、12 层得分和最终平均均单独保存。
 - 对计数、空值、零销量、价格缺失分别做检查；禁止静默丢弃记录。
 - 输出每层与整体的分数；每条序列报告有效样本与状态。
