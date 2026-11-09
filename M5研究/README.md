@@ -17,7 +17,7 @@
 | 联合概率与决策 | 跨日/跨区域依赖、概率协调、联合库存风险 | [联合概率专题](docs/joint-probabilistic-forecasting.md) |
 | 评价与稳健性 | WRMSSE、时间外检验、排名稳定性 | [评价协议](docs/evaluation-protocol.md) |
 | 库存与价值 | 成本非对称、order-up-to、策略后悔值 | [决策价值专题](docs/inventory-decision-value.md) |
-| 实验复现 | 可证伪假设、E1–E4、验收闸门 | [实验计划](docs/experiment-plan.md) |
+| 实验复现 | 可证伪假设、E1–E5、验收闸门 | [实验计划](docs/experiment-plan.md) |
 | 证据边界 | 已有论文结果 ≠ 自行复现 ≠ 实际运营收益 | [证据清单](docs/evidence-register.md) |
 
 ## Hands-on 实战状态
