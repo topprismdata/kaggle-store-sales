@@ -50,8 +50,9 @@
 1. 阅读 [研究综述](docs/research-overview.md)，了解 M5 的任务契约与证据边界。
 2. 浏览 [HTML Deck](deck/index.html)，快速理解竞赛与概率预测。
 3. 使用 [论文矩阵](docs/literature-matrix.md) 逐篇精读一手论文。
-4. 依据 [评价协议](docs/evaluation-protocol.md) 和 [实验计划](docs/experiment-plan.md) 开展可复现实验。
-5. 在产生独立运行结果后，才更新 [证据清单](docs/evidence-register.md) 中的状态。
+4. 阅读 [联合概率预测专题](docs/joint-probabilistic-forecasting.md)，并运行 [E5 理论反例](experiments/joint_dependence_demo.py)。
+5. 依据 [评价协议](docs/evaluation-protocol.md) 和 [实验计划](docs/experiment-plan.md) 开展可复现实验。
+6. 在产生独立运行结果后，才更新 [证据清单](docs/evidence-register.md) 中的状态。
 
 ## 发布与许可说明
 
