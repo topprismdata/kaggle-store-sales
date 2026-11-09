@@ -34,7 +34,7 @@ def test_rmsse_uses_mean_squared_error_over_active_scale():
     train = [0, 0, 2, 4, 2]
     actual = [3, 4]
     forecast = [2, 2]
-    expected = np.sqrt(np.mean((np.array(actual) - np.array(forecast)) ** 2) / 5.0)
+    expected = np.sqrt(np.mean((np.array(actual) - np.array(forecast)) ** 2) / 4.0)
     assert rmsse(train, actual, forecast) == pytest.approx(expected)
 
 
