@@ -1,7 +1,7 @@
 # M5研究
 
 > **M5 Research — Hierarchical Forecasting, Probabilistic Prediction & Inventory Decision Value**  
-> 公开研究资料｜中文｜版本 v1.0｜2026-11-09
+> 公开研究资料｜中文｜版本 v2.0｜2026-11-09
 
 本项目独立研究 [M5 Forecasting Competition](https://www.kaggle.com/competitions/m5-forecasting-accuracy) 及其后续学术工作，探索 **零售预测 → 概率预测 → 库存决策价值** 的完整证据链。
 
@@ -22,14 +22,18 @@
 
 ## Hands-on 实战状态
 
-**计划已完成，实验尚未启动。** 第一周先完成 Accuracy 数据审计、12 层级聚合、官方 WRMSSE 评分器核验和两个简单基线；未通过官方评分器交叉验证，不报告“官方 WRMSSE”。
+**工程骨架已提交；正式实验尚未启动。** Windows 开发/冒烟环境已登记，团队 Linux 仍为规范环境；Kaggle 规则接受人和数据保管人尚未命名，故 G0 BLOCKED。M5-methods companion Drive 已通过当前连接的 Google Drive 验证可列目录和下载。
 
 - [四周执行计划](docs/hands-on-execution-plan-v1.md)
 - [第一周执行 Runbook](docs/week1-runbook.md)
+- [可执行代码骨架与环境](../m5/README.md)
+- [Windows 环境登记](../m5/docs/environment-register.md)
+
+当前代码含 preflight、跨平台 SHA-256 指纹脚本、层级核验、WRMSSE 基础函数及零尺度单元测试骨架；全层级 scorer 和模型 runner 尚未完成或通过官方 reference 核验。
 
 ## 演示文稿
 
-**[M5研究 — HTML Deck（44 页）](deck/index.html)**
+**[M5研究 — HTML Deck（52 页 V2.0）](deck/index.html)**
 
 下载 `deck/index.html` 用浏览器打开，支持 ← → / 空格翻页、讲稿切换、打印。文稿完全本地运行；论文链接需要联网打开。
 
@@ -49,7 +53,7 @@
 - **公开资料梳理：** 已形成文献综述、演示文稿、实验协议。
 - **M5 原始数据：** 未在仓库再分发。须通过官方 Kaggle 条款自行获取。
 - **竞赛冠军代码：** 未搬运。使用 [官方方法仓库](https://github.com/Mcompetitions/M5-methods) 原始链接。
-- **独立复现实验：** *尚未运行或通过评分一致性验收*。本仓库目前是研究资料与预注册实验方案，而非成绩复现仓库。
+- **独立复现实验：** *尚未运行或通过评分一致性验收*。已增加代码骨架，但尚未产生官方 WRMSSE/WSPL 成绩。
 - **经营收益：** 无真实业务收益实验记录，也无可宣称的利润提升。
 
 ## 使用方式
